@@ -1,27 +1,26 @@
-//your JS code here. If required.
-
 document.addEventListener('DOMContentLoaded', function() {
   const loginForm = document.getElementById('loginForm');
   const usernameInput = document.getElementById('username');
   const passwordInput = document.getElementById('password');
-  const rememberCheckbox = document.getElementById('checkbox');
-  const submitButton = document.getElementById('submit');
-  const existingButton = document.getElementById('existing');
+  const rememberMeCheckbox = document.getElementById('rememberMe');
 
-  // Check if there are saved details
+  // Load saved details from local storage
   const savedUsername = localStorage.getItem('username');
   const savedPassword = localStorage.getItem('password');
   if (savedUsername && savedPassword) {
-    existingButton.style.display = 'block';
+    usernameInput.value = savedUsername;
+    passwordInput.value = savedPassword;
+    rememberMeCheckbox.checked = true;
   }
 
-  // Event listener for form submission
+  // Form submission handler
   loginForm.addEventListener('submit', function(event) {
     event.preventDefault();
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value.trim();
 
-    if (rememberCheckbox.checked) {
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+
+    if (rememberMeCheckbox.checked) {
       localStorage.setItem('username', username);
       localStorage.setItem('password', password);
     } else {
@@ -29,12 +28,20 @@ document.addEventListener('DOMContentLoaded', function() {
       localStorage.removeItem('password');
     }
 
-    alert(`Logged in as ${username}`);
+    alert('Logged in as ' + username);
   });
 
-  // Event listener for existing user login
+  // Existing user login button
+  const existingButton = document.createElement('button');
+  existingButton.id = 'existing';
+  existingButton.textContent = 'Login as existing user';
   existingButton.addEventListener('click', function() {
-    const username = localStorage.getItem('username');
-    alert(`Logged in as ${username}`);
+    const savedUsername = localStorage.getItem('username');
+    if (savedUsername) {
+      alert('Logged in as ' + savedUsername);
+    } else {
+      alert('No existing user details found.');
+    }
   });
+  document.body.appendChild(existingButton);
 });
