@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Existing user login button
   const existingButton = document.createElement('button');
-  existingButton.id = 'checkbox';
+  existingButton.id = 'existing';
   existingButton.textContent = 'Login as existing user';
   existingButton.addEventListener('click', function() {
     const savedUsername = localStorage.getItem('username');
