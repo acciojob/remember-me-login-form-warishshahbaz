@@ -1,26 +1,25 @@
 document.addEventListener('DOMContentLoaded', function() {
   const loginForm = document.getElementById('loginForm');
+  const existingBtn = document.getElementById('existing');
   const usernameInput = document.getElementById('username');
   const passwordInput = document.getElementById('password');
   const rememberMeCheckbox = document.getElementById('rememberMe');
 
-  // Load saved details from local storage
+  // Check if there are saved details in local storage
   const savedUsername = localStorage.getItem('username');
   const savedPassword = localStorage.getItem('password');
   if (savedUsername && savedPassword) {
-    usernameInput.value = savedUsername;
-    passwordInput.value = savedPassword;
-    rememberMeCheckbox.checked = true;
+    existingBtn.style.display = 'block';
   }
 
-  // Form submission handler
-  loginForm.addEventListener('submit', function(event) {
+  // Function to handle form submission
+  function handleSubmit(event) {
     event.preventDefault();
-
     const username = usernameInput.value;
     const password = passwordInput.value;
+    const rememberMe = rememberMeCheckbox.checked;
 
-    if (rememberMeCheckbox.checked) {
+    if (rememberMe) {
       localStorage.setItem('username', username);
       localStorage.setItem('password', password);
     } else {
@@ -28,20 +27,15 @@ document.addEventListener('DOMContentLoaded', function() {
       localStorage.removeItem('password');
     }
 
-    alert('Logged in as ' + username);
-  });
+    alert(`Logged in as ${username}`);
+  }
 
-  // Existing user login button
-  const existingButton = document.createElement('button');
-  existingButton.id = 'existing';
-  existingButton.textContent = 'Login as existing user';
-  existingButton.addEventListener('click', function() {
+  // Function to handle existing user login
+  function handleExistingUserLogin() {
     const savedUsername = localStorage.getItem('username');
-    if (savedUsername) {
-      alert('Logged in as ' + savedUsername);
-    } else {
-      alert('No existing user details found.');
-    }
-  });
-  document.body.appendChild(existingButton);
+    alert(`Logged in as ${savedUsername}`);
+  }
+
+  loginForm.addEventListener('submit', handleSubmit);
+  existingBtn.addEventListener('click', handleExistingUserLogin);
 });
